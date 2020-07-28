@@ -7,6 +7,7 @@
 #include "mavlink_commands.h"
 #include "mavlink_message_handler.h"
 #include "mavlink_mission_transfer.h"
+#include "ping.h"
 #include "timeout_handler.h"
 #include "call_every_handler.h"
 #include "safe_queue.h"
@@ -212,6 +213,8 @@ public:
     Time& get_time() { return _time; };
     AutopilotTime& get_autopilot_time() { return _autopilot_time; };
 
+    double get_ping_time_s() const { return _ping.last_ping_time_s(); }
+
     void register_plugin(PluginImplBase* plugin_impl);
     void unregister_plugin(PluginImplBase* plugin_impl);
 
@@ -306,11 +309,13 @@ private:
     void* _autopilot_version_timed_out_cookie = nullptr;
 
     static constexpr double _HEARTBEAT_SEND_INTERVAL_S = 1.0;
+    static constexpr double _ping_interval_s = 3.0;
 
     MAVLinkParameters _params;
     MAVLinkCommands _commands;
 
     Timesync _timesync;
+    Ping _ping;
 
     CallEveryHandler _call_every_handler;
 

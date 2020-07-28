@@ -23,6 +23,7 @@ SystemImpl::SystemImpl(MavsdkImpl& parent, uint8_t system_id, uint8_t comp_id, b
     _params(*this),
     _commands(*this),
     _timesync(*this),
+    _ping(*this),
     _call_every_handler(_time),
     _mission_transfer(*this, _message_handler, _parent.timeout_handler)
 {
@@ -258,14 +259,15 @@ void SystemImpl::heartbeats_timed_out()
 
 void SystemImpl::system_thread()
 {
-    dl_time_t last_time{};
+    dl_time_t last_heartbeat_time{};
+    dl_time_t last_ping_time{};
 
     while (!_should_exit) {
-        if (_time.elapsed_since_s(last_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
+        if (_time.elapsed_since_s(last_heartbeat_time) >= SystemImpl::_HEARTBEAT_SEND_INTERVAL_S) {
             if (_parent.is_connected()) {
                 send_heartbeat();
             }
-            last_time = _time.steady_time();
+            last_heartbeat_time = _time.steady_time();
         }
 
         _call_every_handler.run_once();
@@ -273,6 +275,13 @@ void SystemImpl::system_thread()
         _commands.do_work();
         _timesync.do_work();
         _mission_transfer.do_work();
+
+        if (_time.elapsed_since_s(last_ping_time) >= SystemImpl::_ping_interval_s) {
+            if (_parent.is_connected()) {
+                _ping.run_once();
+            }
+            last_ping_time = _time.steady_time();
+        }
 
         if (_connected) {
             // Work fairly fast if we're connected.

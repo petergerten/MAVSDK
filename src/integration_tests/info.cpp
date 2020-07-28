@@ -22,7 +22,7 @@ TEST_F(SitlTest, Info)
     // FIXME: we need to wait some time until Info has determined the version.
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    for (unsigned i = 0; i < 3; ++i) {
+    for (unsigned i = 0; i < 30; ++i) {
         std::pair<Info::Result, Info::Version> version_result = info->get_version();
 
         EXPECT_EQ(version_result.first, Info::Result::Success);

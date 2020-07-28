@@ -122,6 +122,8 @@ private:
 
     void call_callback(const CommandResultCallback& callback, Result result, float progress);
 
+    static constexpr double _timeout_factor = 3.0;
+
     SystemImpl& _parent;
     LockedQueue<Work> _work_queue{};
 
