@@ -9,21 +9,35 @@
 
 namespace mavsdk {
 
+
+
+
 Shell::Shell(System& system) : PluginBase(), _impl{new ShellImpl(system)} {}
 
 Shell::Shell(std::shared_ptr<System> system) : PluginBase(), _impl{new ShellImpl(system)} {}
 
 Shell::~Shell() {}
 
+
+
+
+
 Shell::Result Shell::send(std::string command) const
 {
     return _impl->send(command);
 }
 
+
+
 void Shell::subscribe_receive(ReceiveCallback callback)
 {
     _impl->receive_async(callback);
 }
+
+
+
+
+
 
 std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
 {
@@ -44,5 +58,8 @@ std::ostream& operator<<(std::ostream& str, Shell::Result const& result)
             return str << "Unknown";
     }
 }
+
+
+
 
 } // namespace mavsdk

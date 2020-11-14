@@ -57,6 +57,7 @@ public:
      */
     ~Telemetry();
 
+
     /**
      * @brief GPS fix type.
      */
@@ -127,8 +128,7 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::StatusTextType const& status_text_type);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::StatusTextType const& status_text_type);
 
     /**
      * @brief Landed State enumeration.
@@ -148,16 +148,18 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::LandedState const& landed_state);
 
+
+
+
     /**
      * @brief Position type in global coordinates.
      */
     struct Position {
+        
         double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to +180) */
-        float absolute_altitude_m{
-            float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
-        float relative_altitude_m{
-            float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
+        float absolute_altitude_m{float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        float relative_altitude_m{float(NAN)}; /**< @brief Altitude relative to takeoff altitude in metres */
     };
 
     /**
@@ -174,6 +176,9 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Position const& position);
 
+
+
+
     /**
      * @brief Quaternion type.
      *
@@ -185,6 +190,7 @@ public:
      * For more info see: https://en.wikipedia.org/wiki/Quaternion
      */
     struct Quaternion {
+        
         float w{float(NAN)}; /**< @brief Quaternion entry 0, also denoted as a */
         float x{float(NAN)}; /**< @brief Quaternion entry 1, also denoted as b */
         float y{float(NAN)}; /**< @brief Quaternion entry 2, also denoted as c */
@@ -205,6 +211,9 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Quaternion const& quaternion);
 
+
+
+
     /**
      * @brief Euler angle type.
      *
@@ -214,12 +223,10 @@ public:
      * For more info see https://en.wikipedia.org/wiki/Euler_angles
      */
     struct EulerAngle {
-        float roll_deg{
-            float(NAN)}; /**< @brief Roll angle in degrees, positive is banking to the right */
-        float pitch_deg{
-            float(NAN)}; /**< @brief Pitch angle in degrees, positive is pitching nose up */
-        float yaw_deg{
-            float(NAN)}; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above */
+        
+        float roll_deg{float(NAN)}; /**< @brief Roll angle in degrees, positive is banking to the right */
+        float pitch_deg{float(NAN)}; /**< @brief Pitch angle in degrees, positive is pitching nose up */
+        float yaw_deg{float(NAN)}; /**< @brief Yaw angle in degrees, positive is clock-wise seen from above */
     };
 
     /**
@@ -236,10 +243,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::EulerAngle const& euler_angle);
 
+
+
+
     /**
      * @brief Angular velocity type.
      */
     struct AngularVelocityBody {
+        
         float roll_rad_s{float(NAN)}; /**< @brief Roll angular velocity */
         float pitch_rad_s{float(NAN)}; /**< @brief Pitch angular velocity */
         float yaw_rad_s{float(NAN)}; /**< @brief Yaw angular velocity */
@@ -250,21 +261,23 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
-        const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
+    friend bool operator==(const Telemetry::AngularVelocityBody& lhs, const Telemetry::AngularVelocityBody& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::AngularVelocityBody`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::AngularVelocityBody const& angular_velocity_body);
+
+
+
 
     /**
      * @brief GPS information type.
      */
     struct GpsInfo {
+        
         int32_t num_satellites{0}; /**< @brief Number of visible satellites in use */
         FixType fix_type{}; /**< @brief Fix type */
     };
@@ -283,13 +296,16 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::GpsInfo const& gps_info);
 
+
+
+
     /**
      * @brief Battery type.
      */
     struct Battery {
+        
         float voltage_v{float(NAN)}; /**< @brief Voltage in volts */
-        float remaining_percent{
-            float(NAN)}; /**< @brief Estimated battery remaining (range: 0.0 to 1.0) */
+        float remaining_percent{float(NAN)}; /**< @brief Estimated battery remaining (range: 0.0 to 1.0) */
     };
 
     /**
@@ -306,23 +322,21 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Battery const& battery);
 
+
+
+
     /**
      * @brief Health type.
      */
     struct Health {
+        
         bool is_gyrometer_calibration_ok{false}; /**< @brief True if the gyrometer is calibrated */
-        bool is_accelerometer_calibration_ok{
-            false}; /**< @brief True if the accelerometer is calibrated */
-        bool is_magnetometer_calibration_ok{
-            false}; /**< @brief True if the magnetometer is calibrated */
-        bool is_level_calibration_ok{
-            false}; /**< @brief True if the vehicle has a valid level calibration */
-        bool is_local_position_ok{false}; /**< @brief True if the local position estimate is good
-                                             enough to fly in 'position control' mode */
-        bool is_global_position_ok{false}; /**< @brief True if the global position estimate is good
-                                              enough to fly in 'position control' mode */
-        bool is_home_position_ok{
-            false}; /**< @brief True if the home position has been initialized properly */
+        bool is_accelerometer_calibration_ok{false}; /**< @brief True if the accelerometer is calibrated */
+        bool is_magnetometer_calibration_ok{false}; /**< @brief True if the magnetometer is calibrated */
+        bool is_level_calibration_ok{false}; /**< @brief True if the vehicle has a valid level calibration */
+        bool is_local_position_ok{false}; /**< @brief True if the local position estimate is good enough to fly in 'position control' mode */
+        bool is_global_position_ok{false}; /**< @brief True if the global position estimate is good enough to fly in 'position control' mode */
+        bool is_home_position_ok{false}; /**< @brief True if the home position has been initialized properly */
     };
 
     /**
@@ -339,10 +353,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Health const& health);
 
+
+
+
     /**
      * @brief Remote control status type.
      */
     struct RcStatus {
+        
         bool was_available_once{false}; /**< @brief True if an RC signal has been available once */
         bool is_available{false}; /**< @brief True if the RC signal is available now */
         float signal_strength_percent{0}; /**< @brief Signal strength (range: 0 to 100) */
@@ -362,10 +380,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::RcStatus const& rc_status);
 
+
+
+
     /**
      * @brief StatusText information type.
      */
     struct StatusText {
+        
         StatusTextType type{}; /**< @brief Message type */
         std::string text{}; /**< @brief MAVLink status message */
     };
@@ -384,14 +406,16 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::StatusText const& status_text);
 
+
+
+
     /**
      * @brief Actuator control target type.
      */
     struct ActuatorControlTarget {
-        int32_t group{0}; /**< @brief An actuator control group is e.g. 'attitude' for the core
-                             flight controls, or 'gimbal' for a payload. */
-        std::vector<float>
-            controls{}; /**< @brief Controls normed from -1 to 1, where 0 is neutral position. */
+        
+        int32_t group{0}; /**< @brief An actuator control group is e.g. 'attitude' for the core flight controls, or 'gimbal' for a payload. */
+        std::vector<float> controls{}; /**< @brief Controls normed from -1 to 1, where 0 is neutral position. */
     };
 
     /**
@@ -399,21 +423,23 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
-        const Telemetry::ActuatorControlTarget& lhs, const Telemetry::ActuatorControlTarget& rhs);
+    friend bool operator==(const Telemetry::ActuatorControlTarget& lhs, const Telemetry::ActuatorControlTarget& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::ActuatorControlTarget`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_control_target);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::ActuatorControlTarget const& actuator_control_target);
+
+
+
 
     /**
      * @brief Actuator output status type.
      */
     struct ActuatorOutputStatus {
+        
         uint32_t active{0}; /**< @brief Active outputs */
         std::vector<float> actuator{}; /**< @brief Servo/motor output values */
     };
@@ -423,16 +449,17 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
-        const Telemetry::ActuatorOutputStatus& lhs, const Telemetry::ActuatorOutputStatus& rhs);
+    friend bool operator==(const Telemetry::ActuatorOutputStatus& lhs, const Telemetry::ActuatorOutputStatus& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::ActuatorOutputStatus`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::ActuatorOutputStatus const& actuator_output_status);
+
+
+
 
     /**
      * @brief Covariance type.
@@ -442,8 +469,8 @@ public:
      * Set first to NaN if unknown.
      */
     struct Covariance {
-        std::vector<float>
-            covariance_matrix{}; /**< @brief Representation of a covariance matrix. */
+        
+        std::vector<float> covariance_matrix{}; /**< @brief Representation of a covariance matrix. */
     };
 
     /**
@@ -460,10 +487,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Covariance const& covariance);
 
+
+
+
     /**
      * @brief Velocity type, represented in the Body (X Y Z) frame and in metres/second.
      */
     struct VelocityBody {
+        
         float x_m_s{}; /**< @brief Velocity in X in metres/second */
         float y_m_s{}; /**< @brief Velocity in Y in metres/second */
         float z_m_s{}; /**< @brief Velocity in Z in metres/second */
@@ -481,13 +512,16 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::VelocityBody const& velocity_body);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::VelocityBody const& velocity_body);
+
+
+
 
     /**
      * @brief Position type, represented in the Body (X Y Z) frame
      */
     struct PositionBody {
+        
         float x_m{}; /**< @brief X Position in metres. */
         float y_m{}; /**< @brief Y Position in metres. */
         float z_m{}; /**< @brief Z Position in metres. */
@@ -505,42 +539,39 @@ public:
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::PositionBody const& position_body);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::PositionBody const& position_body);
+
+
+
+
 
     /**
      * @brief Odometry message type.
      */
     struct Odometry {
+        
         /**
-         * @brief Mavlink frame id
-         */
-        enum class MavFrame {
-            Undef, /**< @brief Frame is undefined.. */
-            BodyNed, /**< @brief Setpoint in body NED frame. This makes sense if all position
-                        control is externalized - e.g. useful to command 2 m/s^2 acceleration to the
-                        right.. */
-            VisionNed, /**< @brief Odometry local coordinate frame of data given by a vision
-                          estimation system, Z-down (x: north, y: east, z: down).. */
-            EstimNed, /**< @brief Odometry local coordinate frame of data given by an estimator
-                         running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
-        };
+     * @brief Mavlink frame id
+     */
+    enum class MavFrame {
+        Undef, /**< @brief Frame is undefined.. */
+        BodyNed, /**< @brief Setpoint in body NED frame. This makes sense if all position control is externalized - e.g. useful to command 2 m/s^2 acceleration to the right.. */
+        VisionNed, /**< @brief Odometry local coordinate frame of data given by a vision estimation system, Z-down (x: north, y: east, z: down).. */
+        EstimNed, /**< @brief Odometry local coordinate frame of data given by an estimator running onboard the vehicle, Z-down (x: north, y: east, z: down).. */
+    };
 
-        /**
-         * @brief Stream operator to print information about a `Telemetry::MavFrame`.
-         *
-         * @return A reference to the stream.
-         */
-        friend std::ostream&
-        operator<<(std::ostream& str, Telemetry::Odometry::MavFrame const& mav_frame);
-
+    /**
+     * @brief Stream operator to print information about a `Telemetry::MavFrame`.
+     *
+     * @return A reference to the stream.
+     */
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::Odometry::MavFrame const& mav_frame);
+        
         uint64_t time_usec{}; /**< @brief Timestamp (0 to use Backend timestamp). */
         MavFrame frame_id{}; /**< @brief Coordinate frame of reference for the pose data. */
-        MavFrame child_frame_id{}; /**< @brief Coordinate frame of reference for the velocity in
-                                      free space (twist) data. */
+        MavFrame child_frame_id{}; /**< @brief Coordinate frame of reference for the velocity in free space (twist) data. */
         PositionBody position_body{}; /**< @brief Position. */
-        Quaternion
-            q{}; /**< @brief Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). */
+        Quaternion q{}; /**< @brief Quaternion components, w, x, y, z (1 0 0 0 is the null-rotation). */
         VelocityBody velocity_body{}; /**< @brief Linear velocity (m/s). */
         AngularVelocityBody angular_velocity_body{}; /**< @brief Angular velocity (rad/s). */
         Covariance pose_covariance{}; /**< @brief Pose cross-covariance matrix. */
@@ -561,16 +592,17 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Odometry const& odometry);
 
+
+
+
     /**
      * @brief DistanceSensor message type.
      */
     struct DistanceSensor {
-        float minimum_distance_m{
-            float(NAN)}; /**< @brief Minimum distance the sensor can measure, NaN if unknown. */
-        float maximum_distance_m{
-            float(NAN)}; /**< @brief Maximum distance the sensor can measure, NaN if unknown. */
-        float current_distance_m{
-            float(NAN)}; /**< @brief Current distance reading, NaN if unknown. */
+        
+        float minimum_distance_m{float(NAN)}; /**< @brief Minimum distance the sensor can measure, NaN if unknown. */
+        float maximum_distance_m{float(NAN)}; /**< @brief Maximum distance the sensor can measure, NaN if unknown. */
+        float current_distance_m{float(NAN)}; /**< @brief Current distance reading, NaN if unknown. */
     };
 
     /**
@@ -578,21 +610,23 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Telemetry::DistanceSensor& lhs, const Telemetry::DistanceSensor& rhs);
+    friend bool operator==(const Telemetry::DistanceSensor& lhs, const Telemetry::DistanceSensor& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::DistanceSensor`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::DistanceSensor const& distance_sensor);
+
+
+
 
     /**
      * @brief PositionNed message type.
      */
     struct PositionNed {
+        
         float north_m{float(NAN)}; /**< @brief Position along north direction in metres */
         float east_m{float(NAN)}; /**< @brief Position along east direction in metres */
         float down_m{float(NAN)}; /**< @brief Position along down direction in metres */
@@ -612,10 +646,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::PositionNed const& position_ned);
 
+
+
+
     /**
      * @brief VelocityNed message type.
      */
     struct VelocityNed {
+        
         float north_m_s{}; /**< @brief Velocity along north direction in metres per second */
         float east_m_s{}; /**< @brief Velocity along east direction in metres per second */
         float down_m_s{}; /**< @brief Velocity along down direction in metres per second */
@@ -635,10 +673,14 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::VelocityNed const& velocity_ned);
 
+
+
+
     /**
      * @brief PositionVelocityNed message type.
      */
     struct PositionVelocityNed {
+        
         PositionNed position{}; /**< @brief Position (NED) */
         VelocityNed velocity{}; /**< @brief Velocity (NED) */
     };
@@ -648,25 +690,26 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool operator==(
-        const Telemetry::PositionVelocityNed& lhs, const Telemetry::PositionVelocityNed& rhs);
+    friend bool operator==(const Telemetry::PositionVelocityNed& lhs, const Telemetry::PositionVelocityNed& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::PositionVelocityNed`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::PositionVelocityNed const& position_velocity_ned);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::PositionVelocityNed const& position_velocity_ned);
+
+
+
 
     /**
      * @brief GroundTruth message type.
      */
     struct GroundTruth {
+        
         double latitude_deg{double(NAN)}; /**< @brief Latitude in degrees (range: -90 to +90) */
         double longitude_deg{double(NAN)}; /**< @brief Longitude in degrees (range: -180 to 180) */
-        float absolute_altitude_m{
-            float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
+        float absolute_altitude_m{float(NAN)}; /**< @brief Altitude AMSL (above mean sea level) in metres */
     };
 
     /**
@@ -683,12 +726,15 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::GroundTruth const& ground_truth);
 
+
+
+
     /**
      * @brief FixedwingMetrics message type.
      */
     struct FixedwingMetrics {
-        float airspeed_m_s{
-            float(NAN)}; /**< @brief Current indicated airspeed (IAS) in metres per second */
+        
+        float airspeed_m_s{float(NAN)}; /**< @brief Current indicated airspeed (IAS) in metres per second */
         float throttle_percentage{float(NAN)}; /**< @brief Current throttle setting (0 to 100) */
         float climb_rate_m_s{float(NAN)}; /**< @brief Current climb rate in metres per second */
     };
@@ -698,27 +744,26 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::FixedwingMetrics& rhs);
+    friend bool operator==(const Telemetry::FixedwingMetrics& lhs, const Telemetry::FixedwingMetrics& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::FixedwingMetrics`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::FixedwingMetrics const& fixedwing_metrics);
+
+
+
 
     /**
      * @brief AccelerationFrd message type.
      */
     struct AccelerationFrd {
-        float forward_m_s2{
-            float(NAN)}; /**< @brief Acceleration in forward direction in metres per second^2 */
-        float right_m_s2{
-            float(NAN)}; /**< @brief Acceleration in right direction in metres per second^2 */
-        float down_m_s2{
-            float(NAN)}; /**< @brief Acceleration in down direction in metres per second^2 */
+        
+        float forward_m_s2{float(NAN)}; /**< @brief Acceleration in forward direction in metres per second^2 */
+        float right_m_s2{float(NAN)}; /**< @brief Acceleration in right direction in metres per second^2 */
+        float down_m_s2{float(NAN)}; /**< @brief Acceleration in down direction in metres per second^2 */
     };
 
     /**
@@ -726,27 +771,26 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Telemetry::AccelerationFrd& lhs, const Telemetry::AccelerationFrd& rhs);
+    friend bool operator==(const Telemetry::AccelerationFrd& lhs, const Telemetry::AccelerationFrd& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::AccelerationFrd`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::AccelerationFrd const& acceleration_frd);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::AccelerationFrd const& acceleration_frd);
+
+
+
 
     /**
      * @brief AngularVelocityFrd message type.
      */
     struct AngularVelocityFrd {
-        float forward_rad_s{
-            float(NAN)}; /**< @brief Angular velocity in forward direction in radians per second */
-        float right_rad_s{
-            float(NAN)}; /**< @brief Angular velocity in right direction in radians per second */
-        float down_rad_s{
-            float(NAN)}; /**< @brief Angular velocity in Down direction in radians per second */
+        
+        float forward_rad_s{float(NAN)}; /**< @brief Angular velocity in forward direction in radians per second */
+        float right_rad_s{float(NAN)}; /**< @brief Angular velocity in right direction in radians per second */
+        float down_rad_s{float(NAN)}; /**< @brief Angular velocity in Down direction in radians per second */
     };
 
     /**
@@ -754,27 +798,26 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Telemetry::AngularVelocityFrd& lhs, const Telemetry::AngularVelocityFrd& rhs);
+    friend bool operator==(const Telemetry::AngularVelocityFrd& lhs, const Telemetry::AngularVelocityFrd& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::AngularVelocityFrd`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::AngularVelocityFrd const& angular_velocity_frd);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::AngularVelocityFrd const& angular_velocity_frd);
+
+
+
 
     /**
      * @brief MagneticFieldFrd message type.
      */
     struct MagneticFieldFrd {
-        float forward_gauss{
-            float(NAN)}; /**< @brief Magnetic field in forward direction measured in Gauss */
-        float right_gauss{
-            float(NAN)}; /**< @brief Magnetic field in East direction measured in Gauss */
-        float down_gauss{
-            float(NAN)}; /**< @brief Magnetic field in Down direction measured in Gauss */
+        
+        float forward_gauss{float(NAN)}; /**< @brief Magnetic field in forward direction measured in Gauss */
+        float right_gauss{float(NAN)}; /**< @brief Magnetic field in East direction measured in Gauss */
+        float down_gauss{float(NAN)}; /**< @brief Magnetic field in Down direction measured in Gauss */
     };
 
     /**
@@ -782,21 +825,23 @@ public:
      *
      * @return `true` if items are equal.
      */
-    friend bool
-    operator==(const Telemetry::MagneticFieldFrd& lhs, const Telemetry::MagneticFieldFrd& rhs);
+    friend bool operator==(const Telemetry::MagneticFieldFrd& lhs, const Telemetry::MagneticFieldFrd& rhs);
 
     /**
      * @brief Stream operator to print information about a `Telemetry::MagneticFieldFrd`.
      *
      * @return A reference to the stream.
      */
-    friend std::ostream&
-    operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& magnetic_field_frd);
+    friend std::ostream& operator<<(std::ostream& str, Telemetry::MagneticFieldFrd const& magnetic_field_frd);
+
+
+
 
     /**
      * @brief Imu message type.
      */
     struct Imu {
+        
         AccelerationFrd acceleration_frd{}; /**< @brief Acceleration */
         AngularVelocityFrd angular_velocity_frd{}; /**< @brief Angular velocity */
         MagneticFieldFrd magnetic_field_frd{}; /**< @brief Magnetic field */
@@ -816,6 +861,10 @@ public:
      * @return A reference to the stream.
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Imu const& imu);
+
+
+
+
 
     /**
      * @brief Possible results returned for telemetry requests.
@@ -837,21 +886,29 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& str, Telemetry::Result const& result);
 
+
+
     /**
      * @brief Callback type for asynchronous Telemetry calls.
      */
     using ResultCallback = std::function<void(Result)>;
 
-    /**
-     * @brief Callback type for subscribe_position.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_position.
+    */
+        
     using PositionCallback = std::function<void(Position)>;
 
     /**
      * @brief Subscribe to 'position' updates.
      */
     void subscribe_position(PositionCallback callback);
+
+
 
     /**
      * @brief Poll for 'Position' (blocking).
@@ -860,16 +917,22 @@ public:
      */
     Position position() const;
 
-    /**
-     * @brief Callback type for subscribe_home.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_home.
+    */
+        
     using HomeCallback = std::function<void(Position)>;
 
     /**
      * @brief Subscribe to 'home position' updates.
      */
     void subscribe_home(HomeCallback callback);
+
+
 
     /**
      * @brief Poll for 'Position' (blocking).
@@ -878,16 +941,22 @@ public:
      */
     Position home() const;
 
-    /**
-     * @brief Callback type for subscribe_in_air.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_in_air.
+    */
+        
     using InAirCallback = std::function<void(bool)>;
 
     /**
      * @brief Subscribe to in-air updates.
      */
     void subscribe_in_air(InAirCallback callback);
+
+
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -896,16 +965,22 @@ public:
      */
     bool in_air() const;
 
-    /**
-     * @brief Callback type for subscribe_landed_state.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_landed_state.
+    */
+        
     using LandedStateCallback = std::function<void(LandedState)>;
 
     /**
      * @brief Subscribe to landed state updates
      */
     void subscribe_landed_state(LandedStateCallback callback);
+
+
 
     /**
      * @brief Poll for 'LandedState' (blocking).
@@ -914,16 +989,22 @@ public:
      */
     LandedState landed_state() const;
 
-    /**
-     * @brief Callback type for subscribe_armed.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_armed.
+    */
+        
     using ArmedCallback = std::function<void(bool)>;
 
     /**
      * @brief Subscribe to armed updates.
      */
     void subscribe_armed(ArmedCallback callback);
+
+
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -932,16 +1013,22 @@ public:
      */
     bool armed() const;
 
-    /**
-     * @brief Callback type for subscribe_attitude_quaternion.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_attitude_quaternion.
+    */
+        
     using AttitudeQuaternionCallback = std::function<void(Quaternion)>;
 
     /**
      * @brief Subscribe to 'attitude' updates (quaternion).
      */
     void subscribe_attitude_quaternion(AttitudeQuaternionCallback callback);
+
+
 
     /**
      * @brief Poll for 'Quaternion' (blocking).
@@ -950,16 +1037,22 @@ public:
      */
     Quaternion attitude_quaternion() const;
 
-    /**
-     * @brief Callback type for subscribe_attitude_euler.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_attitude_euler.
+    */
+        
     using AttitudeEulerCallback = std::function<void(EulerAngle)>;
 
     /**
      * @brief Subscribe to 'attitude' updates (Euler).
      */
     void subscribe_attitude_euler(AttitudeEulerCallback callback);
+
+
 
     /**
      * @brief Poll for 'EulerAngle' (blocking).
@@ -968,16 +1061,22 @@ public:
      */
     EulerAngle attitude_euler() const;
 
-    /**
-     * @brief Callback type for subscribe_attitude_angular_velocity_body.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_attitude_angular_velocity_body.
+    */
+        
     using AttitudeAngularVelocityBodyCallback = std::function<void(AngularVelocityBody)>;
 
     /**
      * @brief Subscribe to 'attitude' updates (angular velocity)
      */
     void subscribe_attitude_angular_velocity_body(AttitudeAngularVelocityBodyCallback callback);
+
+
 
     /**
      * @brief Poll for 'AngularVelocityBody' (blocking).
@@ -986,16 +1085,22 @@ public:
      */
     AngularVelocityBody attitude_angular_velocity_body() const;
 
-    /**
-     * @brief Callback type for subscribe_camera_attitude_quaternion.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_camera_attitude_quaternion.
+    */
+        
     using CameraAttitudeQuaternionCallback = std::function<void(Quaternion)>;
 
     /**
      * @brief Subscribe to 'camera attitude' updates (quaternion).
      */
     void subscribe_camera_attitude_quaternion(CameraAttitudeQuaternionCallback callback);
+
+
 
     /**
      * @brief Poll for 'Quaternion' (blocking).
@@ -1004,16 +1109,22 @@ public:
      */
     Quaternion camera_attitude_quaternion() const;
 
-    /**
-     * @brief Callback type for subscribe_camera_attitude_euler.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_camera_attitude_euler.
+    */
+        
     using CameraAttitudeEulerCallback = std::function<void(EulerAngle)>;
 
     /**
      * @brief Subscribe to 'camera attitude' updates (Euler).
      */
     void subscribe_camera_attitude_euler(CameraAttitudeEulerCallback callback);
+
+
 
     /**
      * @brief Poll for 'EulerAngle' (blocking).
@@ -1022,16 +1133,22 @@ public:
      */
     EulerAngle camera_attitude_euler() const;
 
-    /**
-     * @brief Callback type for subscribe_velocity_ned.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_velocity_ned.
+    */
+        
     using VelocityNedCallback = std::function<void(VelocityNed)>;
 
     /**
      * @brief Subscribe to 'ground speed' updates (NED).
      */
     void subscribe_velocity_ned(VelocityNedCallback callback);
+
+
 
     /**
      * @brief Poll for 'VelocityNed' (blocking).
@@ -1040,16 +1157,22 @@ public:
      */
     VelocityNed velocity_ned() const;
 
-    /**
-     * @brief Callback type for subscribe_gps_info.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_gps_info.
+    */
+        
     using GpsInfoCallback = std::function<void(GpsInfo)>;
 
     /**
      * @brief Subscribe to 'GPS info' updates.
      */
     void subscribe_gps_info(GpsInfoCallback callback);
+
+
 
     /**
      * @brief Poll for 'GpsInfo' (blocking).
@@ -1058,16 +1181,22 @@ public:
      */
     GpsInfo gps_info() const;
 
-    /**
-     * @brief Callback type for subscribe_battery.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_battery.
+    */
+        
     using BatteryCallback = std::function<void(Battery)>;
 
     /**
      * @brief Subscribe to 'battery' updates.
      */
     void subscribe_battery(BatteryCallback callback);
+
+
 
     /**
      * @brief Poll for 'Battery' (blocking).
@@ -1076,16 +1205,22 @@ public:
      */
     Battery battery() const;
 
-    /**
-     * @brief Callback type for subscribe_flight_mode.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_flight_mode.
+    */
+        
     using FlightModeCallback = std::function<void(FlightMode)>;
 
     /**
      * @brief Subscribe to 'flight mode' updates.
      */
     void subscribe_flight_mode(FlightModeCallback callback);
+
+
 
     /**
      * @brief Poll for 'FlightMode' (blocking).
@@ -1094,16 +1229,22 @@ public:
      */
     FlightMode flight_mode() const;
 
-    /**
-     * @brief Callback type for subscribe_health.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_health.
+    */
+        
     using HealthCallback = std::function<void(Health)>;
 
     /**
      * @brief Subscribe to 'health' updates.
      */
     void subscribe_health(HealthCallback callback);
+
+
 
     /**
      * @brief Poll for 'Health' (blocking).
@@ -1112,16 +1253,22 @@ public:
      */
     Health health() const;
 
-    /**
-     * @brief Callback type for subscribe_rc_status.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_rc_status.
+    */
+        
     using RcStatusCallback = std::function<void(RcStatus)>;
 
     /**
      * @brief Subscribe to 'RC status' updates.
      */
     void subscribe_rc_status(RcStatusCallback callback);
+
+
 
     /**
      * @brief Poll for 'RcStatus' (blocking).
@@ -1130,16 +1277,22 @@ public:
      */
     RcStatus rc_status() const;
 
-    /**
-     * @brief Callback type for subscribe_status_text.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_status_text.
+    */
+        
     using StatusTextCallback = std::function<void(StatusText)>;
 
     /**
      * @brief Subscribe to 'status text' updates.
      */
     void subscribe_status_text(StatusTextCallback callback);
+
+
 
     /**
      * @brief Poll for 'StatusText' (blocking).
@@ -1148,16 +1301,22 @@ public:
      */
     StatusText status_text() const;
 
-    /**
-     * @brief Callback type for subscribe_actuator_control_target.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_actuator_control_target.
+    */
+        
     using ActuatorControlTargetCallback = std::function<void(ActuatorControlTarget)>;
 
     /**
      * @brief Subscribe to 'actuator control target' updates.
      */
     void subscribe_actuator_control_target(ActuatorControlTargetCallback callback);
+
+
 
     /**
      * @brief Poll for 'ActuatorControlTarget' (blocking).
@@ -1166,16 +1325,22 @@ public:
      */
     ActuatorControlTarget actuator_control_target() const;
 
-    /**
-     * @brief Callback type for subscribe_actuator_output_status.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_actuator_output_status.
+    */
+        
     using ActuatorOutputStatusCallback = std::function<void(ActuatorOutputStatus)>;
 
     /**
      * @brief Subscribe to 'actuator output status' updates.
      */
     void subscribe_actuator_output_status(ActuatorOutputStatusCallback callback);
+
+
 
     /**
      * @brief Poll for 'ActuatorOutputStatus' (blocking).
@@ -1184,16 +1349,22 @@ public:
      */
     ActuatorOutputStatus actuator_output_status() const;
 
-    /**
-     * @brief Callback type for subscribe_odometry.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_odometry.
+    */
+        
     using OdometryCallback = std::function<void(Odometry)>;
 
     /**
      * @brief Subscribe to 'odometry' updates.
      */
     void subscribe_odometry(OdometryCallback callback);
+
+
 
     /**
      * @brief Poll for 'Odometry' (blocking).
@@ -1202,16 +1373,22 @@ public:
      */
     Odometry odometry() const;
 
-    /**
-     * @brief Callback type for subscribe_position_velocity_ned.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_position_velocity_ned.
+    */
+        
     using PositionVelocityNedCallback = std::function<void(PositionVelocityNed)>;
 
     /**
      * @brief Subscribe to 'position velocity' updates.
      */
     void subscribe_position_velocity_ned(PositionVelocityNedCallback callback);
+
+
 
     /**
      * @brief Poll for 'PositionVelocityNed' (blocking).
@@ -1220,16 +1397,22 @@ public:
      */
     PositionVelocityNed position_velocity_ned() const;
 
-    /**
-     * @brief Callback type for subscribe_ground_truth.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_ground_truth.
+    */
+        
     using GroundTruthCallback = std::function<void(GroundTruth)>;
 
     /**
      * @brief Subscribe to 'ground truth' updates.
      */
     void subscribe_ground_truth(GroundTruthCallback callback);
+
+
 
     /**
      * @brief Poll for 'GroundTruth' (blocking).
@@ -1238,16 +1421,22 @@ public:
      */
     GroundTruth ground_truth() const;
 
-    /**
-     * @brief Callback type for subscribe_fixedwing_metrics.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_fixedwing_metrics.
+    */
+        
     using FixedwingMetricsCallback = std::function<void(FixedwingMetrics)>;
 
     /**
      * @brief Subscribe to 'fixedwing metrics' updates.
      */
     void subscribe_fixedwing_metrics(FixedwingMetricsCallback callback);
+
+
 
     /**
      * @brief Poll for 'FixedwingMetrics' (blocking).
@@ -1256,16 +1445,22 @@ public:
      */
     FixedwingMetrics fixedwing_metrics() const;
 
-    /**
-     * @brief Callback type for subscribe_imu.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_imu.
+    */
+        
     using ImuCallback = std::function<void(Imu)>;
 
     /**
      * @brief Subscribe to 'IMU' updates.
      */
     void subscribe_imu(ImuCallback callback);
+
+
 
     /**
      * @brief Poll for 'Imu' (blocking).
@@ -1274,16 +1469,22 @@ public:
      */
     Imu imu() const;
 
-    /**
-     * @brief Callback type for subscribe_health_all_ok.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_health_all_ok.
+    */
+        
     using HealthAllOkCallback = std::function<void(bool)>;
 
     /**
      * @brief Subscribe to 'HealthAllOk' updates.
      */
     void subscribe_health_all_ok(HealthAllOkCallback callback);
+
+
 
     /**
      * @brief Poll for 'bool' (blocking).
@@ -1292,16 +1493,22 @@ public:
      */
     bool health_all_ok() const;
 
-    /**
-     * @brief Callback type for subscribe_unix_epoch_time.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_unix_epoch_time.
+    */
+        
     using UnixEpochTimeCallback = std::function<void(uint64_t)>;
 
     /**
      * @brief Subscribe to 'unix epoch time' updates.
      */
     void subscribe_unix_epoch_time(UnixEpochTimeCallback callback);
+
+
 
     /**
      * @brief Poll for 'uint64_t' (blocking).
@@ -1310,16 +1517,22 @@ public:
      */
     uint64_t unix_epoch_time() const;
 
-    /**
-     * @brief Callback type for subscribe_distance_sensor.
-     */
 
+
+
+        
+    /**
+    * @brief Callback type for subscribe_distance_sensor.
+    */
+        
     using DistanceSensorCallback = std::function<void(DistanceSensor)>;
 
     /**
      * @brief Subscribe to 'Distance Sensor' updates.
      */
     void subscribe_distance_sensor(DistanceSensorCallback callback);
+
+
 
     /**
      * @brief Poll for 'DistanceSensor' (blocking).
@@ -1328,12 +1541,17 @@ public:
      */
     DistanceSensor distance_sensor() const;
 
+
+
+
     /**
      * @brief Set rate to 'position' updates.
      *
      * This function is non-blocking. See 'set_rate_position' for the blocking counterpart.
      */
     void set_rate_position_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'position' updates.
@@ -1344,12 +1562,17 @@ public:
      */
     Result set_rate_position(double rate_hz) const;
 
+
+
+
     /**
      * @brief Set rate to 'home position' updates.
      *
      * This function is non-blocking. See 'set_rate_home' for the blocking counterpart.
      */
     void set_rate_home_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'home position' updates.
@@ -1360,12 +1583,17 @@ public:
      */
     Result set_rate_home(double rate_hz) const;
 
+
+
+
     /**
      * @brief Set rate to in-air updates.
      *
      * This function is non-blocking. See 'set_rate_in_air' for the blocking counterpart.
      */
     void set_rate_in_air_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to in-air updates.
@@ -1376,6 +1604,9 @@ public:
      */
     Result set_rate_in_air(double rate_hz) const;
 
+
+
+
     /**
      * @brief Set rate to landed state updates
      *
@@ -1383,15 +1614,19 @@ public:
      */
     void set_rate_landed_state_async(double rate_hz, const ResultCallback callback);
 
+
+
     /**
      * @brief Set rate to landed state updates
      *
-     * This function is blocking. See 'set_rate_landed_state_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'set_rate_landed_state_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_landed_state(double rate_hz) const;
+
+
+
 
     /**
      * @brief Set rate to 'attitude' updates.
@@ -1399,6 +1634,8 @@ public:
      * This function is non-blocking. See 'set_rate_attitude' for the blocking counterpart.
      */
     void set_rate_attitude_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'attitude' updates.
@@ -1409,6 +1646,9 @@ public:
      */
     Result set_rate_attitude(double rate_hz) const;
 
+
+
+
     /**
      * @brief Set rate of camera attitude updates.
      *
@@ -1416,15 +1656,19 @@ public:
      */
     void set_rate_camera_attitude_async(double rate_hz, const ResultCallback callback);
 
+
+
     /**
      * @brief Set rate of camera attitude updates.
      *
-     * This function is blocking. See 'set_rate_camera_attitude_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'set_rate_camera_attitude_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_camera_attitude(double rate_hz) const;
+
+
+
 
     /**
      * @brief Set rate to 'ground speed' updates (NED).
@@ -1433,15 +1677,19 @@ public:
      */
     void set_rate_velocity_ned_async(double rate_hz, const ResultCallback callback);
 
+
+
     /**
      * @brief Set rate to 'ground speed' updates (NED).
      *
-     * This function is blocking. See 'set_rate_velocity_ned_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'set_rate_velocity_ned_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_velocity_ned(double rate_hz) const;
+
+
+
 
     /**
      * @brief Set rate to 'GPS info' updates.
@@ -1449,6 +1697,8 @@ public:
      * This function is non-blocking. See 'set_rate_gps_info' for the blocking counterpart.
      */
     void set_rate_gps_info_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'GPS info' updates.
@@ -1459,12 +1709,17 @@ public:
      */
     Result set_rate_gps_info(double rate_hz) const;
 
+
+
+
     /**
      * @brief Set rate to 'battery' updates.
      *
      * This function is non-blocking. See 'set_rate_battery' for the blocking counterpart.
      */
     void set_rate_battery_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'battery' updates.
@@ -1475,12 +1730,17 @@ public:
      */
     Result set_rate_battery(double rate_hz) const;
 
+
+
+
     /**
      * @brief Set rate to 'RC status' updates.
      *
      * This function is non-blocking. See 'set_rate_rc_status' for the blocking counterpart.
      */
     void set_rate_rc_status_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'RC status' updates.
@@ -1491,41 +1751,50 @@ public:
      */
     Result set_rate_rc_status(double rate_hz) const;
 
-    /**
-     * @brief Set rate to 'actuator control target' updates.
-     *
-     * This function is non-blocking. See 'set_rate_actuator_control_target' for the blocking
-     * counterpart.
-     */
-    void set_rate_actuator_control_target_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'actuator control target' updates.
      *
-     * This function is blocking. See 'set_rate_actuator_control_target_async' for the non-blocking
-     * counterpart.
+     * This function is non-blocking. See 'set_rate_actuator_control_target' for the blocking counterpart.
+     */
+    void set_rate_actuator_control_target_async(double rate_hz, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Set rate to 'actuator control target' updates.
+     *
+     * This function is blocking. See 'set_rate_actuator_control_target_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_actuator_control_target(double rate_hz) const;
 
-    /**
-     * @brief Set rate to 'actuator output status' updates.
-     *
-     * This function is non-blocking. See 'set_rate_actuator_output_status' for the blocking
-     * counterpart.
-     */
-    void set_rate_actuator_output_status_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'actuator output status' updates.
      *
-     * This function is blocking. See 'set_rate_actuator_output_status_async' for the non-blocking
-     * counterpart.
+     * This function is non-blocking. See 'set_rate_actuator_output_status' for the blocking counterpart.
+     */
+    void set_rate_actuator_output_status_async(double rate_hz, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Set rate to 'actuator output status' updates.
+     *
+     * This function is blocking. See 'set_rate_actuator_output_status_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_actuator_output_status(double rate_hz) const;
+
+
+
 
     /**
      * @brief Set rate to 'odometry' updates.
@@ -1533,6 +1802,8 @@ public:
      * This function is non-blocking. See 'set_rate_odometry' for the blocking counterpart.
      */
     void set_rate_odometry_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'odometry' updates.
@@ -1543,23 +1814,29 @@ public:
      */
     Result set_rate_odometry(double rate_hz) const;
 
-    /**
-     * @brief Set rate to 'position velocity' updates.
-     *
-     * This function is non-blocking. See 'set_rate_position_velocity_ned' for the blocking
-     * counterpart.
-     */
-    void set_rate_position_velocity_ned_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'position velocity' updates.
      *
-     * This function is blocking. See 'set_rate_position_velocity_ned_async' for the non-blocking
-     * counterpart.
+     * This function is non-blocking. See 'set_rate_position_velocity_ned' for the blocking counterpart.
+     */
+    void set_rate_position_velocity_ned_async(double rate_hz, const ResultCallback callback);
+
+
+
+    /**
+     * @brief Set rate to 'position velocity' updates.
+     *
+     * This function is blocking. See 'set_rate_position_velocity_ned_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_position_velocity_ned(double rate_hz) const;
+
+
+
 
     /**
      * @brief Set rate to 'ground truth' updates.
@@ -1568,15 +1845,19 @@ public:
      */
     void set_rate_ground_truth_async(double rate_hz, const ResultCallback callback);
 
+
+
     /**
      * @brief Set rate to 'ground truth' updates.
      *
-     * This function is blocking. See 'set_rate_ground_truth_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'set_rate_ground_truth_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_ground_truth(double rate_hz) const;
+
+
+
 
     /**
      * @brief Set rate to 'fixedwing metrics' updates.
@@ -1585,15 +1866,19 @@ public:
      */
     void set_rate_fixedwing_metrics_async(double rate_hz, const ResultCallback callback);
 
+
+
     /**
      * @brief Set rate to 'fixedwing metrics' updates.
      *
-     * This function is blocking. See 'set_rate_fixedwing_metrics_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'set_rate_fixedwing_metrics_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_fixedwing_metrics(double rate_hz) const;
+
+
+
 
     /**
      * @brief Set rate to 'IMU' updates.
@@ -1601,6 +1886,8 @@ public:
      * This function is non-blocking. See 'set_rate_imu' for the blocking counterpart.
      */
     void set_rate_imu_async(double rate_hz, const ResultCallback callback);
+
+
 
     /**
      * @brief Set rate to 'IMU' updates.
@@ -1611,6 +1898,9 @@ public:
      */
     Result set_rate_imu(double rate_hz) const;
 
+
+
+
     /**
      * @brief Set rate to 'unix epoch time' updates.
      *
@@ -1618,15 +1908,19 @@ public:
      */
     void set_rate_unix_epoch_time_async(double rate_hz, const ResultCallback callback);
 
+
+
     /**
      * @brief Set rate to 'unix epoch time' updates.
      *
-     * This function is blocking. See 'set_rate_unix_epoch_time_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'set_rate_unix_epoch_time_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_unix_epoch_time(double rate_hz) const;
+
+
+
 
     /**
      * @brief Set rate to 'Distance Sensor' updates.
@@ -1635,15 +1929,19 @@ public:
      */
     void set_rate_distance_sensor_async(double rate_hz, const ResultCallback callback);
 
+
+
     /**
      * @brief Set rate to 'Distance Sensor' updates.
      *
-     * This function is blocking. See 'set_rate_distance_sensor_async' for the non-blocking
-     * counterpart.
+     * This function is blocking. See 'set_rate_distance_sensor_async' for the non-blocking counterpart.
      *
      * @return Result of request.
      */
     Result set_rate_distance_sensor(double rate_hz) const;
+
+
+
 
     /**
      * @brief Copy constructor.

@@ -14,86 +14,153 @@ using ActuatorControlGroup = Offboard::ActuatorControlGroup;
 using ActuatorControl = Offboard::ActuatorControl;
 using AttitudeRate = Offboard::AttitudeRate;
 using PositionNedYaw = Offboard::PositionNedYaw;
+using PositionGlobalYaw = Offboard::PositionGlobalYaw;
 using VelocityBodyYawspeed = Offboard::VelocityBodyYawspeed;
 using VelocityNedYaw = Offboard::VelocityNedYaw;
+using VelocityGlobalYaw = Offboard::VelocityGlobalYaw;
+
+
 
 Offboard::Offboard(System& system) : PluginBase(), _impl{new OffboardImpl(system)} {}
 
-Offboard::Offboard(std::shared_ptr<System> system) : PluginBase(), _impl{new OffboardImpl(system)}
-{}
+Offboard::Offboard(std::shared_ptr<System> system) : PluginBase(), _impl{new OffboardImpl(system)} {}
 
 Offboard::~Offboard() {}
+
+
 
 void Offboard::start_async(const ResultCallback callback)
 {
     _impl->start_async(callback);
 }
 
+
+
 Offboard::Result Offboard::start() const
 {
     return _impl->start();
 }
+
+
 
 void Offboard::stop_async(const ResultCallback callback)
 {
     _impl->stop_async(callback);
 }
 
+
+
 Offboard::Result Offboard::stop() const
 {
     return _impl->stop();
 }
+
+
+
+
 
 bool Offboard::is_active() const
 {
     return _impl->is_active();
 }
 
+
+
+
+
 Offboard::Result Offboard::set_attitude(Attitude attitude) const
 {
     return _impl->set_attitude(attitude);
 }
+
+
+
+
 
 Offboard::Result Offboard::set_actuator_control(ActuatorControl actuator_control) const
 {
     return _impl->set_actuator_control(actuator_control);
 }
 
+
+
+
+
 Offboard::Result Offboard::set_attitude_rate(AttitudeRate attitude_rate) const
 {
     return _impl->set_attitude_rate(attitude_rate);
 }
+
+
+
+
 
 Offboard::Result Offboard::set_position_ned(PositionNedYaw position_ned_yaw) const
 {
     return _impl->set_position_ned(position_ned_yaw);
 }
 
+
+
+
+
+Offboard::Result Offboard::set_position_global(PositionGlobalYaw position_global_yaw) const
+{
+    return _impl->set_position_global(position_global_yaw);
+}
+
+
+
+
+
 Offboard::Result Offboard::set_velocity_body(VelocityBodyYawspeed velocity_body_yawspeed) const
 {
     return _impl->set_velocity_body(velocity_body_yawspeed);
 }
+
+
+
+
 
 Offboard::Result Offboard::set_velocity_ned(VelocityNedYaw velocity_ned_yaw) const
 {
     return _impl->set_velocity_ned(velocity_ned_yaw);
 }
 
+
+
+
+
+Offboard::Result Offboard::set_velocity_global(VelocityGlobalYaw velocity_global_yaw) const
+{
+    return _impl->set_velocity_global(velocity_global_yaw);
+}
+
+
+
+
+
+Offboard::Result Offboard::set_position_velocity_ned(PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const
+{
+    return _impl->set_position_velocity_ned(position_ned_yaw, velocity_ned_yaw);
+}
+
+
+
 bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs)
 {
-    return ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) ||
-            rhs.roll_deg == lhs.roll_deg) &&
-           ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) ||
-            rhs.pitch_deg == lhs.pitch_deg) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg) &&
-           ((std::isnan(rhs.thrust_value) && std::isnan(lhs.thrust_value)) ||
-            rhs.thrust_value == lhs.thrust_value);
+    return
+        ((std::isnan(rhs.roll_deg) && std::isnan(lhs.roll_deg)) || rhs.roll_deg == lhs.roll_deg) &&
+        ((std::isnan(rhs.pitch_deg) && std::isnan(lhs.pitch_deg)) || rhs.pitch_deg == lhs.pitch_deg) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg) &&
+        ((std::isnan(rhs.thrust_value) && std::isnan(lhs.thrust_value)) || rhs.thrust_value == lhs.thrust_value);
 }
 
 std::ostream& operator<<(std::ostream& str, Offboard::Attitude const& attitude)
 {
     str << std::setprecision(15);
-    str << "attitude:" << '\n' << "{\n";
+    str << "attitude:" << '\n'
+        << "{\n";
     str << "    roll_deg: " << attitude.roll_deg << '\n';
     str << "    pitch_deg: " << attitude.pitch_deg << '\n';
     str << "    yaw_deg: " << attitude.yaw_deg << '\n';
@@ -102,21 +169,20 @@ std::ostream& operator<<(std::ostream& str, Offboard::Attitude const& attitude)
     return str;
 }
 
-bool operator==(
-    const Offboard::ActuatorControlGroup& lhs, const Offboard::ActuatorControlGroup& rhs)
+
+bool operator==(const Offboard::ActuatorControlGroup& lhs, const Offboard::ActuatorControlGroup& rhs)
 {
-    return (rhs.controls == lhs.controls);
+    return
+        (rhs.controls == lhs.controls);
 }
 
-std::ostream&
-operator<<(std::ostream& str, Offboard::ActuatorControlGroup const& actuator_control_group)
+std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControlGroup const& actuator_control_group)
 {
     str << std::setprecision(15);
-    str << "actuator_control_group:" << '\n' << "{\n";
+    str << "actuator_control_group:" << '\n'
+        << "{\n";
     str << "    controls: [";
-    for (auto it = actuator_control_group.controls.begin();
-         it != actuator_control_group.controls.end();
-         ++it) {
+    for (auto it = actuator_control_group.controls.begin(); it != actuator_control_group.controls.end(); ++it) {
         str << *it;
         str << (it + 1 != actuator_control_group.controls.end() ? ", " : "]\n");
     }
@@ -124,15 +190,18 @@ operator<<(std::ostream& str, Offboard::ActuatorControlGroup const& actuator_con
     return str;
 }
 
+
 bool operator==(const Offboard::ActuatorControl& lhs, const Offboard::ActuatorControl& rhs)
 {
-    return (rhs.groups == lhs.groups);
+    return
+        (rhs.groups == lhs.groups);
 }
 
 std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& actuator_control)
 {
     str << std::setprecision(15);
-    str << "actuator_control:" << '\n' << "{\n";
+    str << "actuator_control:" << '\n'
+        << "{\n";
     str << "    groups: [";
     for (auto it = actuator_control.groups.begin(); it != actuator_control.groups.end(); ++it) {
         str << *it;
@@ -142,22 +211,21 @@ std::ostream& operator<<(std::ostream& str, Offboard::ActuatorControl const& act
     return str;
 }
 
+
 bool operator==(const Offboard::AttitudeRate& lhs, const Offboard::AttitudeRate& rhs)
 {
-    return ((std::isnan(rhs.roll_deg_s) && std::isnan(lhs.roll_deg_s)) ||
-            rhs.roll_deg_s == lhs.roll_deg_s) &&
-           ((std::isnan(rhs.pitch_deg_s) && std::isnan(lhs.pitch_deg_s)) ||
-            rhs.pitch_deg_s == lhs.pitch_deg_s) &&
-           ((std::isnan(rhs.yaw_deg_s) && std::isnan(lhs.yaw_deg_s)) ||
-            rhs.yaw_deg_s == lhs.yaw_deg_s) &&
-           ((std::isnan(rhs.thrust_value) && std::isnan(lhs.thrust_value)) ||
-            rhs.thrust_value == lhs.thrust_value);
+    return
+        ((std::isnan(rhs.roll_deg_s) && std::isnan(lhs.roll_deg_s)) || rhs.roll_deg_s == lhs.roll_deg_s) &&
+        ((std::isnan(rhs.pitch_deg_s) && std::isnan(lhs.pitch_deg_s)) || rhs.pitch_deg_s == lhs.pitch_deg_s) &&
+        ((std::isnan(rhs.yaw_deg_s) && std::isnan(lhs.yaw_deg_s)) || rhs.yaw_deg_s == lhs.yaw_deg_s) &&
+        ((std::isnan(rhs.thrust_value) && std::isnan(lhs.thrust_value)) || rhs.thrust_value == lhs.thrust_value);
 }
 
 std::ostream& operator<<(std::ostream& str, Offboard::AttitudeRate const& attitude_rate)
 {
     str << std::setprecision(15);
-    str << "attitude_rate:" << '\n' << "{\n";
+    str << "attitude_rate:" << '\n'
+        << "{\n";
     str << "    roll_deg_s: " << attitude_rate.roll_deg_s << '\n';
     str << "    pitch_deg_s: " << attitude_rate.pitch_deg_s << '\n';
     str << "    yaw_deg_s: " << attitude_rate.yaw_deg_s << '\n';
@@ -166,18 +234,21 @@ std::ostream& operator<<(std::ostream& str, Offboard::AttitudeRate const& attitu
     return str;
 }
 
+
 bool operator==(const Offboard::PositionNedYaw& lhs, const Offboard::PositionNedYaw& rhs)
 {
-    return ((std::isnan(rhs.north_m) && std::isnan(lhs.north_m)) || rhs.north_m == lhs.north_m) &&
-           ((std::isnan(rhs.east_m) && std::isnan(lhs.east_m)) || rhs.east_m == lhs.east_m) &&
-           ((std::isnan(rhs.down_m) && std::isnan(lhs.down_m)) || rhs.down_m == lhs.down_m) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+    return
+        ((std::isnan(rhs.north_m) && std::isnan(lhs.north_m)) || rhs.north_m == lhs.north_m) &&
+        ((std::isnan(rhs.east_m) && std::isnan(lhs.east_m)) || rhs.east_m == lhs.east_m) &&
+        ((std::isnan(rhs.down_m) && std::isnan(lhs.down_m)) || rhs.down_m == lhs.down_m) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
 std::ostream& operator<<(std::ostream& str, Offboard::PositionNedYaw const& position_ned_yaw)
 {
     str << std::setprecision(15);
-    str << "position_ned_yaw:" << '\n' << "{\n";
+    str << "position_ned_yaw:" << '\n'
+        << "{\n";
     str << "    north_m: " << position_ned_yaw.north_m << '\n';
     str << "    east_m: " << position_ned_yaw.east_m << '\n';
     str << "    down_m: " << position_ned_yaw.down_m << '\n';
@@ -186,24 +257,44 @@ std::ostream& operator<<(std::ostream& str, Offboard::PositionNedYaw const& posi
     return str;
 }
 
-bool operator==(
-    const Offboard::VelocityBodyYawspeed& lhs, const Offboard::VelocityBodyYawspeed& rhs)
+
+bool operator==(const Offboard::PositionGlobalYaw& lhs, const Offboard::PositionGlobalYaw& rhs)
 {
-    return ((std::isnan(rhs.forward_m_s) && std::isnan(lhs.forward_m_s)) ||
-            rhs.forward_m_s == lhs.forward_m_s) &&
-           ((std::isnan(rhs.right_m_s) && std::isnan(lhs.right_m_s)) ||
-            rhs.right_m_s == lhs.right_m_s) &&
-           ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) ||
-            rhs.down_m_s == lhs.down_m_s) &&
-           ((std::isnan(rhs.yawspeed_deg_s) && std::isnan(lhs.yawspeed_deg_s)) ||
-            rhs.yawspeed_deg_s == lhs.yawspeed_deg_s);
+    return
+        ((std::isnan(rhs.lat) && std::isnan(lhs.lat)) || rhs.lat == lhs.lat) &&
+        ((std::isnan(rhs.lon) && std::isnan(lhs.lon)) || rhs.lon == lhs.lon) &&
+        ((std::isnan(rhs.alt) && std::isnan(lhs.alt)) || rhs.alt == lhs.alt) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
-std::ostream&
-operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_body_yawspeed)
+std::ostream& operator<<(std::ostream& str, Offboard::PositionGlobalYaw const& position_global_yaw)
 {
     str << std::setprecision(15);
-    str << "velocity_body_yawspeed:" << '\n' << "{\n";
+    str << "position_global_yaw:" << '\n'
+        << "{\n";
+    str << "    lat: " << position_global_yaw.lat << '\n';
+    str << "    lon: " << position_global_yaw.lon << '\n';
+    str << "    alt: " << position_global_yaw.alt << '\n';
+    str << "    yaw_deg: " << position_global_yaw.yaw_deg << '\n';
+    str << '}';
+    return str;
+}
+
+
+bool operator==(const Offboard::VelocityBodyYawspeed& lhs, const Offboard::VelocityBodyYawspeed& rhs)
+{
+    return
+        ((std::isnan(rhs.forward_m_s) && std::isnan(lhs.forward_m_s)) || rhs.forward_m_s == lhs.forward_m_s) &&
+        ((std::isnan(rhs.right_m_s) && std::isnan(lhs.right_m_s)) || rhs.right_m_s == lhs.right_m_s) &&
+        ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s) &&
+        ((std::isnan(rhs.yawspeed_deg_s) && std::isnan(lhs.yawspeed_deg_s)) || rhs.yawspeed_deg_s == lhs.yawspeed_deg_s);
+}
+
+std::ostream& operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_body_yawspeed)
+{
+    str << std::setprecision(15);
+    str << "velocity_body_yawspeed:" << '\n'
+        << "{\n";
     str << "    forward_m_s: " << velocity_body_yawspeed.forward_m_s << '\n';
     str << "    right_m_s: " << velocity_body_yawspeed.right_m_s << '\n';
     str << "    down_m_s: " << velocity_body_yawspeed.down_m_s << '\n';
@@ -212,21 +303,21 @@ operator<<(std::ostream& str, Offboard::VelocityBodyYawspeed const& velocity_bod
     return str;
 }
 
+
 bool operator==(const Offboard::VelocityNedYaw& lhs, const Offboard::VelocityNedYaw& rhs)
 {
-    return ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) ||
-            rhs.north_m_s == lhs.north_m_s) &&
-           ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) ||
-            rhs.east_m_s == lhs.east_m_s) &&
-           ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) ||
-            rhs.down_m_s == lhs.down_m_s) &&
-           ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+    return
+        ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) || rhs.north_m_s == lhs.north_m_s) &&
+        ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) || rhs.east_m_s == lhs.east_m_s) &&
+        ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
 }
 
 std::ostream& operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velocity_ned_yaw)
 {
     str << std::setprecision(15);
-    str << "velocity_ned_yaw:" << '\n' << "{\n";
+    str << "velocity_ned_yaw:" << '\n'
+        << "{\n";
     str << "    north_m_s: " << velocity_ned_yaw.north_m_s << '\n';
     str << "    east_m_s: " << velocity_ned_yaw.east_m_s << '\n';
     str << "    down_m_s: " << velocity_ned_yaw.down_m_s << '\n';
@@ -234,6 +325,31 @@ std::ostream& operator<<(std::ostream& str, Offboard::VelocityNedYaw const& velo
     str << '}';
     return str;
 }
+
+
+bool operator==(const Offboard::VelocityGlobalYaw& lhs, const Offboard::VelocityGlobalYaw& rhs)
+{
+    return
+        ((std::isnan(rhs.north_m_s) && std::isnan(lhs.north_m_s)) || rhs.north_m_s == lhs.north_m_s) &&
+        ((std::isnan(rhs.east_m_s) && std::isnan(lhs.east_m_s)) || rhs.east_m_s == lhs.east_m_s) &&
+        ((std::isnan(rhs.down_m_s) && std::isnan(lhs.down_m_s)) || rhs.down_m_s == lhs.down_m_s) &&
+        ((std::isnan(rhs.yaw_deg) && std::isnan(lhs.yaw_deg)) || rhs.yaw_deg == lhs.yaw_deg);
+}
+
+std::ostream& operator<<(std::ostream& str, Offboard::VelocityGlobalYaw const& velocity_global_yaw)
+{
+    str << std::setprecision(15);
+    str << "velocity_global_yaw:" << '\n'
+        << "{\n";
+    str << "    north_m_s: " << velocity_global_yaw.north_m_s << '\n';
+    str << "    east_m_s: " << velocity_global_yaw.east_m_s << '\n';
+    str << "    down_m_s: " << velocity_global_yaw.down_m_s << '\n';
+    str << "    yaw_deg: " << velocity_global_yaw.yaw_deg << '\n';
+    str << '}';
+    return str;
+}
+
+
 
 std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
 {
@@ -258,5 +374,8 @@ std::ostream& operator<<(std::ostream& str, Offboard::Result const& result)
             return str << "Unknown";
     }
 }
+
+
+
 
 } // namespace mavsdk
