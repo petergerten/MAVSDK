@@ -189,6 +189,18 @@ public:
     };
 
     /**
+     * @brief Type for position commands in GLOBAL INT coordinates and yaw.
+     */
+    struct PositionGlobalYaw {
+        float lat{};
+        float lon{};
+        float alt{};
+        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                            above) */
+    };
+
+  
+    /**
      * @brief Equal operator to compare two `Offboard::PositionNedYaw` objects.
      *
      * @return `true` if items are equal.
@@ -242,6 +254,18 @@ public:
                             above) */
     };
 
+    /**
+     * @brief Type for velocity commands in GLOBAL INT coordinates and yaw.
+     */
+    struct VelocityGlobalYaw {
+        float north_m_s{}; /**< @brief Velocity North (in metres/second) */
+        float east_m_s{}; /**< @brief Velocity East (in metres/second) */
+        float down_m_s{}; /**< @brief Velocity Down (in metres/second) */
+        float yaw_deg{}; /**< @brief Yaw in degrees (0 North, positive is clock-wise looking from
+                            above) */
+    };
+
+  
     /**
      * @brief Equal operator to compare two `Offboard::VelocityNedYaw` objects.
      *

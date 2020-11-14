@@ -169,6 +169,63 @@ Offboard::Result OffboardImpl::set_velocity_ned(Offboard::VelocityNedYaw velocit
     return send_velocity_ned();
 }
 
+
+Offboard::Result OffboardImpl::set_position_global(Offboard::PositionGlobalYaw position_global_yaw)
+{
+    _mutex.lock();
+    _position_global_yaw = position_global_yaw;
+
+    if (_mode != Mode::PositionGlobal) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send Ned setpoints from now on.
+        _parent->add_call_every(
+            [this]() { send_position_global(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+        _mode = Mode::PositionGlobal;
+    } else {
+        // We're already sending these kind of setpoints. Since the setpoint change, let's
+        // reschedule the next call, so we don't send setpoints too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    // also send it right now to reduce latency
+    return send_position_global();
+}
+
+Offboard::Result OffboardImpl::set_velocity_global(Offboard::VelocityGlobalYaw velocity_global_yaw)
+{
+    _mutex.lock();
+    _velocity_global_yaw = velocity_global_yaw;
+
+    if (_mode != Mode::VelocityGlobal) {
+        if (_call_every_cookie) {
+            // If we're already sending other setpoints, stop that now.
+            _parent->remove_call_every(_call_every_cookie);
+            _call_every_cookie = nullptr;
+        }
+        // We automatically send Ned setpoints from now on.
+        _parent->add_call_every(
+            [this]() { send_velocity_global(); }, SEND_INTERVAL_S, &_call_every_cookie);
+
+        _mode = Mode::VelocityGlobal;
+    } else {
+        // We're already sending these kind of setpoints. Since the setpoint change, let's
+        // reschedule the next call, so we don't send setpoints too often.
+        _parent->reset_call_every(_call_every_cookie);
+    }
+    _mutex.unlock();
+
+    // also send it right now to reduce latency
+    return send_velocity_global();
+}
+
+  
+
 Offboard::Result
 OffboardImpl::set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed)
 {
@@ -278,7 +335,115 @@ Offboard::Result OffboardImpl::set_actuator_control(Offboard::ActuatorControl ac
     return send_actuator_control();
 }
 
-Offboard::Result OffboardImpl::send_position_ned()
+Offboard::Result OffboardImpl::send_position_global()
+{
+    // const static uint16_t IGNORE_X = (1 << 0);
+    // const static uint16_t IGNORE_Y = (1 << 1);
+    // const static uint16_t IGNORE_Z = (1 << 2);
+    const static uint16_t IGNORE_VX = (1 << 3);
+    const static uint16_t IGNORE_VY = (1 << 4);
+    const static uint16_t IGNORE_VZ = (1 << 5);
+    const static uint16_t IGNORE_AX = (1 << 6);
+    const static uint16_t IGNORE_AY = (1 << 7);
+    const static uint16_t IGNORE_AZ = (1 << 8);
+    // const static uint16_t IS_FORCE = (1 << 9);
+    // const static uint16_t IGNORE_YAW = (1 << 10);
+    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    _mutex.lock();
+    const float yaw = to_rad_from_deg(_position_global_yaw.yaw_deg);
+    const float yaw_rate = 0.0f;
+    const float lat_int = _position_global_yaw.lat;
+    const float lon_int = _position_global_yaw.lon;
+    const float alt = _position_global_yaw.alt;
+    const float vx = 0.0f;
+    const float vy = 0.0f;
+    const float vz = 0.0f;
+    const float afx = 0.0f;
+    const float afy = 0.0f;
+    const float afz = 0.0f;
+    _mutex.unlock();
+
+    mavlink_message_t message;
+    mavlink_msg_set_position_target_global_int_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_FRAME_GLOBAL_INT,
+        IGNORE_VX | IGNORE_VY | IGNORE_VZ | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        lat_int,
+        lon_int,
+        alt,
+        vx,
+        vy,
+        vz,
+        afx,
+        afy,
+        afz,
+        yaw,
+        yaw_rate);
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
+}
+
+Offboard::Result OffboardImpl::send_velocity_global()
+{
+    const static uint16_t IGNORE_X = (1 << 0);
+    const static uint16_t IGNORE_Y = (1 << 1);
+    const static uint16_t IGNORE_Z = (1 << 2);
+    // const static uint16_t IGNORE_VX = (1 << 3);
+    // const static uint16_t IGNORE_VY = (1 << 4);
+    // const static uint16_t IGNORE_VZ = (1 << 5);
+    const static uint16_t IGNORE_AX = (1 << 6);
+    const static uint16_t IGNORE_AY = (1 << 7);
+    const static uint16_t IGNORE_AZ = (1 << 8);
+    // const static uint16_t IS_FORCE = (1 << 9);
+    // const static uint16_t IGNORE_YAW = (1 << 10);
+    const static uint16_t IGNORE_YAW_RATE = (1 << 11);
+
+    _mutex.lock();
+    const float yaw = to_rad_from_deg(_velocity_global_yaw.yaw_deg);
+    const float yaw_rate = 0.0f;
+    const float lat_int = 0.0f;
+    const float lon_int = 0.0f;
+    const float alt = 0.0f;
+    const float vx = _velocity_global_yaw.north_m_s;
+    const float vy = _velocity_global_yaw.east_m_s;
+    const float vz = _velocity_global_yaw.down_m_s;
+    const float afx = 0.0f;
+    const float afy = 0.0f;
+    const float afz = 0.0f;
+    _mutex.unlock();
+
+    mavlink_message_t message;
+    mavlink_msg_set_position_target_global_int_pack(
+        _parent->get_own_system_id(),
+        _parent->get_own_component_id(),
+        &message,
+        static_cast<uint32_t>(_parent->get_time().elapsed_s() * 1e3),
+        _parent->get_system_id(),
+        _parent->get_autopilot_id(),
+        MAV_FRAME_GLOBAL_INT,
+        IGNORE_X | IGNORE_Y | IGNORE_Z | IGNORE_AX | IGNORE_AY | IGNORE_AZ | IGNORE_YAW_RATE,
+        lat_int,
+        lon_int,
+        alt,
+        vx,
+        vy,
+        vz,
+        afx,
+        afy,
+        afz,
+        yaw,
+        yaw_rate);
+    return _parent->send_message(message) ? Offboard::Result::Success :
+                                            Offboard::Result::ConnectionError;
+}
+
+ Offboard::Result OffboardImpl::send_position_ned()
 {
     // const static uint16_t IGNORE_X = (1 << 0);
     // const static uint16_t IGNORE_Y = (1 << 1);

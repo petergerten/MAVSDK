@@ -30,6 +30,8 @@ public:
     bool is_active();
 
     Offboard::Result set_position_ned(Offboard::PositionNedYaw position_ned_yaw);
+    Offboard::Result set_position_global(Offboard::PositionGlobalYaw position_ned_yaw);
+    Offboard::Result set_velocity_global(Offboard::VelocityGlobalYaw position_ned_yaw);
     Offboard::Result set_velocity_ned(Offboard::VelocityNedYaw velocity_ned_yaw);
     Offboard::Result set_velocity_body(Offboard::VelocityBodyYawspeed velocity_body_yawspeed);
     Offboard::Result set_attitude(Offboard::Attitude attitude);
@@ -41,6 +43,8 @@ public:
 
 private:
     Offboard::Result send_position_ned();
+    Offboard::Result send_velocity_global();
+    Offboard::Result send_position_global();
     Offboard::Result send_velocity_ned();
     Offboard::Result send_velocity_body();
     Offboard::Result send_attitude_rate();
@@ -67,7 +71,9 @@ private:
         VelocityBody,
         Attitude,
         AttitudeRate,
-        ActuatorControl
+        ActuatorControl,
+	PositionGlobal,
+	VelocityGlobal
     } _mode = Mode::NotActive;
     Offboard::PositionNedYaw _position_ned_yaw{};
     Offboard::VelocityNedYaw _velocity_ned_yaw{};
@@ -75,6 +81,8 @@ private:
     Offboard::Attitude _attitude{};
     Offboard::AttitudeRate _attitude_rate{};
     Offboard::ActuatorControl _actuator_control{};
+    Offboard::PositionGlobalYaw _position_global_yaw{};
+    Offboard::VelocityGlobalYaw _velocity_global_yaw{};
     dl_time_t _last_started{};
 
     void* _call_every_cookie = nullptr;
