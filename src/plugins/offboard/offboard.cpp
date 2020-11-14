@@ -138,15 +138,6 @@ Offboard::Result Offboard::set_velocity_global(VelocityGlobalYaw velocity_global
 
 
 
-
-
-Offboard::Result Offboard::set_position_velocity_ned(PositionNedYaw position_ned_yaw, VelocityNedYaw velocity_ned_yaw) const
-{
-    return _impl->set_position_velocity_ned(position_ned_yaw, velocity_ned_yaw);
-}
-
-
-
 bool operator==(const Offboard::Attitude& lhs, const Offboard::Attitude& rhs)
 {
     return
